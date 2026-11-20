@@ -1,0 +1,21 @@
+# secrets never enter the build context
+.env
+.env.*
+**/.env
+
+# local environments, caches and data
+.venv
+venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+*.db
+*.db-shm
+*.db-wal
+data
+litellm_cache
+
+Dockerfile
+.dockerignore
