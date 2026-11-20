@@ -1,0 +1,35 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# data
+*.db
+*.db-shm
+*.db-wal
+*.sqlite3
+data/
+litellm_cache/
+
+# node / frontend
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+
+# editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
