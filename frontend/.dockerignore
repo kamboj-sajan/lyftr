@@ -1,0 +1,12 @@
+# secrets never enter the build context
+.env
+.env.*
+**/.env
+
+node_modules
+dist
+*.log
+*.tsbuildinfo
+
+Dockerfile
+.dockerignore
