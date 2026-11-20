@@ -1,0 +1,380 @@
+:root {
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --text: #1f2330;
+  --muted: #5d6475;
+  --border: #e2e5ee;
+  --accent: #4f46e5;
+  --accent-text: #ffffff;
+  --user-bg: #4f46e5;
+  --user-text: #ffffff;
+  --assistant-bg: #ffffff;
+  --error-bg: #fdecec;
+  --error-text: #8a1c1c;
+  --error-border: #f3b4b4;
+  --live-bg: #dbe7ff;
+  --live-text: #173f8a;
+  --cache-bg: #d7f5e1;
+  --cache-text: #11592d;
+  --warn-text: #8a4b00;
+  --radius: 14px;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12141b;
+    --panel: #1a1d27;
+    --text: #e8eaf1;
+    --muted: #a3a9ba;
+    --border: #2c3040;
+    --accent: #7c74ff;
+    --user-bg: #4f46e5;
+    --assistant-bg: #1f2330;
+    --error-bg: #3a1d20;
+    --error-text: #ffc9c9;
+    --error-border: #6b2a2f;
+    --live-bg: #1c3260;
+    --live-text: #cfe0ff;
+    --cache-bg: #143d27;
+    --cache-text: #c4f2d6;
+    --warn-text: #ffcf8a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.session {
+  color: var(--muted);
+  font-size: 0.78rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ghost {
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 7px 14px;
+}
+
+.ghost:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 260px;
+}
+
+.field-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.field input,
+.field select {
+  font: inherit;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.empty {
+  margin: auto;
+  max-width: 460px;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+}
+
+.row-user {
+  justify-content: flex-end;
+}
+
+.row-assistant {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: min(680px, 88%);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+.text {
+  white-space: pre-wrap;
+}
+
+.bubble-user {
+  background: var(--user-bg);
+  color: var(--user-text);
+  border-color: transparent;
+  border-bottom-right-radius: 4px;
+}
+
+.bubble-assistant {
+  background: var(--assistant-bg);
+  border-bottom-left-radius: 4px;
+}
+
+.bubble-error {
+  background: var(--error-bg);
+  color: var(--error-text);
+  border-color: var(--error-border);
+}
+
+.bubble-pending {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: blink 1.2s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.meta-label {
+  opacity: 0.85;
+}
+
+.meta-item > span:last-child {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.meta-warn > span:last-child {
+  color: var(--warn-text);
+  font-weight: 600;
+}
+
+.badge {
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.badge-live {
+  background: var(--live-bg);
+  color: var(--live-text);
+}
+
+.badge-cache {
+  background: var(--cache-bg);
+  color: var(--cache-text);
+}
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 12px 20px 10px;
+}
+
+.composer {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.composer-input {
+  flex: 1;
+  font: inherit;
+  resize: none;
+  min-height: 48px;
+  max-height: 200px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.composer-input:focus,
+.field input:focus,
+.field select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.composer-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.counter {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-over {
+  color: var(--error-text);
+  font-weight: 600;
+}
+
+.send {
+  background: var(--accent);
+  color: var(--accent-text);
+  border: none;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+.api-base {
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+}
+
+@media (max-width: 600px) {
+  .app {
+    border: none;
+  }
+  .header,
+  .settings,
+  .messages,
+  .footer {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .bubble {
+    max-width: 94%;
+  }
+}
