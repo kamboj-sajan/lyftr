@@ -1,8 +1,14 @@
 # Direct runtime dependencies. requirements.txt is generated from this file:
 #   uv pip compile requirements.in --universal --python-version 3.12 --generate-hashes -o requirements.txt
 # litellm is pinned exactly: releases 1.82.7, 1.82.8 and 1.107.0 were compromised on PyPI.
-# The [proxy] extra is required: LiteLLM's cache-hit path lazily imports proxy modules.
-litellm[proxy]==1.110.2
+litellm==1.110.2
+# On a cache hit LiteLLM lazily imports proxy modules, which need orjson and soundfile
+# (fastapi too, already listed below). Without them every cache hit raises
+# ModuleNotFoundError; tests/test_chat.py exercises a real hit to catch that. Installing
+# just these instead of the whole litellm[proxy] extra keeps the image several hundred MB
+# smaller (the extra pulls polars, granian, psycopg, botocore, azure, ...).
+orjson==3.13.0
+soundfile==0.14.0
 fastapi==0.165.0
 uvicorn==0.54.0
 pydantic==2.14.4
