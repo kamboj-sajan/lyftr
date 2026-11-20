@@ -1,0 +1,10 @@
+# Direct runtime dependencies. requirements.txt is generated from this file:
+#   uv pip compile requirements.in --universal --python-version 3.12 --generate-hashes -o requirements.txt
+# litellm is pinned exactly: releases 1.82.7, 1.82.8 and 1.107.0 were compromised on PyPI.
+# The [proxy] extra is required: LiteLLM's cache-hit path lazily imports proxy modules.
+litellm[proxy]==1.110.2
+fastapi==0.165.0
+uvicorn==0.54.0
+pydantic==2.14.4
+pydantic-settings==2.16.3
+aiosqlite==0.22.1
