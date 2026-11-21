@@ -395,6 +395,43 @@ code {
   line-height: 1.6;
 }
 
+/* Rendered Markdown in assistant replies. */
+.text.markdown {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.markdown > :first-child { margin-top: 0; }
+.markdown > :last-child { margin-bottom: 0; }
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown pre { margin: 0 0 0.6em; }
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 { margin: 0.8em 0 0.4em; font-size: 1em; font-weight: 650; }
+.markdown h3 { font-size: 1.08em; }
+.markdown ul,
+.markdown ol { padding-left: 1.4em; }
+.markdown li + li { margin-top: 0.2em; }
+.markdown strong { font-weight: 650; }
+.markdown a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+  padding: 0.1em 0.35em;
+  border-radius: 5px;
+  background: rgba(127, 127, 127, 0.16);
+}
+.markdown pre {
+  padding: 0.7em 0.85em;
+  border-radius: 8px;
+  background: rgba(127, 127, 127, 0.12);
+  overflow-x: auto;
+  white-space: pre;
+}
+.markdown pre code { padding: 0; background: none; font-size: 0.85em; }
+
 .bubble-user {
   background: var(--gradient);
   color: var(--on-accent);

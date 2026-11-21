@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Markdown } from '../markdown'
 import type { ChatItem, ChatMetadata } from '../types'
 import {
   AlertIcon,
@@ -99,7 +100,9 @@ export function MessageItem({ item }: { item: ChatItem }) {
           <AssistantAvatar />
           <div className="bubble bubble-assistant" data-testid="assistant-message">
             <CopyButton text={item.content} />
-            <div className="text">{item.content}</div>
+            <div className="text markdown">
+              <Markdown text={item.content} />
+            </div>
             <MetaRow metadata={item.metadata} />
           </div>
         </div>
