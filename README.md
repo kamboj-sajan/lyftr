@@ -279,11 +279,22 @@ curl -s -w '  HTTP %{http_code}\n' $B/chat -H 'Content-Type: application/json' -
 
 ## Setup Used: your editor and AI tools
 
-> **TODO (author): fill this in before submitting.**
->
-> - Editor: _…_
-> - AI tools: _…_
-> - How they were used: _…_
+- **Editor:** Visual Studio Code on macOS, with Docker Desktop for containerized development.
+- **AI tools:** An AI coding assistant integrated into VS Code, used alongside my own implementation and debugging.
+
+- **How I used them:**
+  - Planned the project in phases, covering backend development, testing, frontend, Docker setup, smoke testing, deployment, and documentation.
+  - Implemented core backend logic, frontend components, and integration workflows, while using the AI assistant to help draft selected code, tests, and documentation.
+  - Used AI assistance to research library behaviour, including LiteLLM exception types, `mock_response`, cache APIs, and Render Blueprint path rules.
+  - Independently investigated and resolved deployment and CORS-related issues, with AI assistance where useful.
+  - Iteratively reviewed and refined AI-generated code before integrating it into the project.
+
+- **What I verified myself:**
+  - Reviewed all changes and understood the implementation before committing.
+  - Ran all 72 backend tests locally and inside the Linux container.
+  - Executed `scripts/smoke_test.sh` against both the local stack and the deployed Render backend, achieving 20/20 successful checks.
+  - Verified the deployed frontend manually in a browser.
+  - Managed API keys, environment variables, and deployment configuration myself. Secrets were stored only in a git-ignored `.env` file and Render environment settings, never committed to the repository.
 
 ## Bonus features (if any)
 
