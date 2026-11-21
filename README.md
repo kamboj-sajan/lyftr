@@ -13,9 +13,9 @@ Browser (React, Vercel) ──JSON──▶ FastAPI (Docker, Render) ──▶ L
 
 | | URL |
 |---|---|
-| Frontend | _to be added after deployment_ |
-| Backend | _to be added after deployment_ |
-| Health | _to be added after deployment_ (`<backend>/health`) |
+| Frontend | <https://frontend-iota-eight-72.vercel.app> |
+| Backend | <https://lyftr-backend.onrender.com> |
+| Health | <https://lyftr-backend.onrender.com/health> |
 | GitHub | <https://github.com/kamboj-sajan/lyftr> |
 
 The backend runs on Render's free plan, which sleeps after 15 minutes without traffic. The first request after that can take up to a minute, so open `/health` first. Deployment steps: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
