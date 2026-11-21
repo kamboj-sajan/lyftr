@@ -1,0 +1,53 @@
+# Render Blueprint for the backend (Dashboard -> New -> Blueprint -> pick this repo).
+# The frontend is deployed separately on Vercel (see docs/DEPLOYMENT.md).
+#
+# Free plan caveats (be honest about them in demos):
+#   * The service sleeps after 15 minutes without traffic; the first request then takes up to ~1 minute.
+#   * The free plan cannot attach a persistent disk, so /data (SQLite history + cache) is ephemeral:
+#     it is wiped on every redeploy, restart or spin-down. History works normally while the service is awake.
+#   * To keep history across restarts, switch `plan` to a paid plan (e.g. starter) and uncomment `disk`.
+services:
+  - type: web
+    name: lyftr-backend
+    runtime: docker
+    plan: free
+    region: oregon
+    rootDir: backend
+    # Both paths are relative to the repository root. Render builds the last stage (runtime).
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    # disk:
+    #   name: app-data
+    #   mountPath: /data
+    #   sizeGB: 1
+    envVars:
+      # Secrets and deployment-specific values: Render asks for these when the Blueprint is created.
+      - key: LLM_API_KEYS
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      # Fixed values (PORT is injected by Render and picked up by the Dockerfile CMD).
+      - key: LLM_MODEL
+        value: groq/openai/gpt-oss-120b
+      - key: LLM_TIMEOUT_SECONDS
+        value: "20"
+      - key: LLM_TEMPERATURE
+        value: "0.2"
+      - key: LLM_MAX_TOKENS
+        value: "2048"
+      - key: DATABASE_URL
+        value: sqlite:////data/app.db
+      - key: ENABLE_FAILURE_SIMULATION
+        value: "true"
+      - key: DEFAULT_SYSTEM_PROMPT
+        value: You are a helpful, concise assistant.
+      - key: HISTORY_MAX_MESSAGES
+        value: "40"
+      - key: CACHE_TYPE
+        value: local
+      - key: CACHE_DIR
+        value: /data/litellm_cache
+      - key: LOG_LEVEL
+        value: INFO
