@@ -13,9 +13,10 @@ services:
     plan: free
     region: oregon
     rootDir: backend
-    # Both paths are relative to the repository root. Render builds the last stage (runtime).
-    dockerfilePath: ./backend/Dockerfile
-    dockerContext: ./backend
+    # With rootDir set, Render resolves both paths relative to rootDir (here: backend/).
+    # Render builds the Dockerfile's last stage (runtime).
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /health
     autoDeployTrigger: commit
     # disk:
