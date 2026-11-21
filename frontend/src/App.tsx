@@ -19,14 +19,21 @@ export default function App() {
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const endRef = useRef<HTMLDivElement>(null)
 
-  // Also wakes a sleeping free-tier backend as soon as the page opens.
+  // Also wakes a sleeping free-tier backend as soon as the page opens. Keeps re-checking, so the pill
+  // recovers on its own after the backend wakes up or finishes a redeploy (fast while down, slow while up).
   useEffect(() => {
     let cancelled = false
-    fetchHealth().then((result) => {
-      if (!cancelled) setHealth(result ? { kind: 'online', health: result } : { kind: 'offline' })
-    })
+    let timer: ReturnType<typeof setTimeout> | undefined
+    async function check() {
+      const result = await fetchHealth()
+      if (cancelled) return
+      setHealth(result ? { kind: 'online', health: result } : { kind: 'offline' })
+      timer = setTimeout(check, result ? 60_000 : 5_000)
+    }
+    check()
     return () => {
       cancelled = true
+      clearTimeout(timer)
     }
   }, [])
 
