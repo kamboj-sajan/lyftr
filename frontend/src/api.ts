@@ -39,6 +39,27 @@ function describeHttpError(status: number, body: unknown): string {
   }
 }
 
+export interface Health {
+  status: string
+  keys_configured: number
+  cache_enabled: boolean
+}
+
+/** GET /health. Resolves to null when the backend is unreachable or unhealthy. */
+export async function fetchHealth(timeoutMs = 75_000): Promise<Health | null> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
+  try {
+    const response = await fetch(`${API_BASE_URL}/health`, { signal: controller.signal })
+    if (!response.ok) return null
+    return (await response.json()) as Health
+  } catch {
+    return null
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
 export async function sendChat(request: ChatRequest, simulateFailure?: string): Promise<ChatResponse> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
   if (simulateFailure) headers['X-Simulate-Failure'] = simulateFailure
