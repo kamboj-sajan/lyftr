@@ -13,11 +13,11 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=("../.env", ".env"), extra="ignore")
 
     llm_api_keys: str = ""
-    llm_model: str = "gemini/gemini-3.5-flash"
+    llm_model: str = "groq/openai/gpt-oss-120b"
     llm_api_base: str | None = None
     llm_timeout_seconds: float = 20.0
     llm_temperature: float = 0.2
-    llm_max_tokens: int = 1024
+    llm_max_tokens: int = 2048
 
     database_url: str = "sqlite:///./app.db"
     allowed_origins: str = "http://localhost:3000,http://localhost:5173"
