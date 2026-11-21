@@ -10,7 +10,10 @@ provider failures can be exercised:
     key contains "dead"   -> 401
     key contains "badreq" -> 400 (a request-caused error)
     key contains "empty"  -> 200 with empty content
-    anything else         -> 200 with a normal reply
+    anything else         -> 200 with "Fake reply to: <last user message>"
+
+When the last user message is a question and earlier user turns exist, the
+reply also quotes the previous user turn, a crude stand-in for memory.
 
 Every request body is recorded (together with the key that sent it) so tests
 can inspect exactly what was sent to the provider.
@@ -102,10 +105,13 @@ class FakeLLMServer:
                         return
 
                 messages = body.get("messages", [])
-                last_user = next(
-                    (m.get("content", "") for m in reversed(messages) if m.get("role") == "user"), ""
-                )
+                user_turns = [str(m.get("content", "")) for m in messages if m.get("role") == "user"]
+                last_user = user_turns[-1] if user_turns else ""
                 content = "" if "empty" in api_key else f"Fake reply to: {last_user}"
+                # Crude "memory": a question in a conversation quotes the previous user turn,
+                # so multi-turn checks (e.g. "What is my favourite number?") can pass.
+                if content and last_user.rstrip().endswith("?") and len(user_turns) > 1:
+                    content += f" (you said earlier: {user_turns[-2]})"
                 prompt_chars = sum(len(str(m.get("content", ""))) for m in messages)
                 usage = {
                     "prompt_tokens": max(1, prompt_chars // 4),

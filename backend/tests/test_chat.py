@@ -68,7 +68,8 @@ def test_multi_turn_sends_history_to_provider(client, new_session, fake_llm):
     sid = new_session()
     chat(client, sid, "My favourite number is 42")
     fake_llm.reset()
-    chat(client, sid, "What is my favourite number?")
+    reply = chat(client, sid, "What is my favourite number?").json()["reply"]
+    assert "42" in reply  # the fake provider only "remembers" what the history contains
     sent = fake_llm.requests[-1]["body"]["messages"]
     assert [m["role"] for m in sent] == ["system", "user", "assistant", "user"]
     assert sent[0]["content"] == "You are a test assistant."
